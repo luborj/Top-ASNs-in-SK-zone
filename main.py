@@ -39,7 +39,7 @@ except:
 # Parse domain list
 domains = []
 with open('domains.txt') as csvfile:
-    next(csvfile) # Skip n lines because there is header
+    next(csvfile) # Skip header
     next(csvfile)
     next(csvfile)
     next(csvfile)
@@ -71,8 +71,6 @@ unique_asn = []
 count_asn = []
 pairing = {}
 
-err_log = open("error.log", "a")
-
 for row in dns:
     try:
         result = asndb.lookup(row[1])
@@ -82,12 +80,9 @@ for row in dns:
         if not result in unique_asn:
             unique_asn.append(result)
     except ValueError:
-        err_log.write(time.strftime("%d.%m.%Y %H:%M:%S %Z "))
-        err_log.write(result)
-        err_log.write('\n')
+        with open('error.log', 'a') as err_log:
+            err_log.write('[ ' + time.strftime("%d.%m.%Y %H:%M:%S %Z") + ' ] ' + 'ValueError: ' + result + '\n')
         continue
-
-err_log.close()
 
 for _ in unique_asn:
     count_asn.append(all_asn.count(_))
