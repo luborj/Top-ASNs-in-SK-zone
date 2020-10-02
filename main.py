@@ -82,7 +82,9 @@ for row in dns:
         if not result in unique_asn:
             unique_asn.append(result)
     except ValueError:
-        err_log.write(time.strftime("%d.%m.%Y %H:%M:%S %Z"), result)
+        err_log.write(time.strftime("%d.%m.%Y %H:%M:%S %Z "))
+        err_log.write(result)
+        err_log.write('\n')
         continue
 
 err_log.close()
